@@ -24,3 +24,14 @@ From this API logging is not implemented alongside the authentication and author
 - xUnit for unit testing
 - NSubstitute for mocking dependencies in unit tests
 - PlantUML for architecture diagrams
+
+## Available DiscountTypes:
+1. Percentage
+2. FixedAmount
+
+## Initial Seed
+Table columns:
+  (Name, Type, Priority)
+Values:
+1. ('Price List Discount', Percentage, 1),
+2. ('Promotion', Percentage, 2)
