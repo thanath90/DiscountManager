@@ -1,0 +1,119 @@
+@startuml Class Diagram
+class "Discount" {
+  +int? Id
+  +string Name
+  +DiscountType Type
+  +int Priority
+}
+class "DiscountType" {
+  <<enumeration>>
+  Percentage
+  FixedAmount
+}
+interface "IDiscountRepository" {
+  +GetAsync(): Task~IEnumerable~<Discount>
+  +Get(id): Task~Discount?~
+  +Get(name): Task~Discount?~
+  +Create(discount): Task~Discount~
+  +Update(discount): Task~Discount~
+  +Delete(id): Task
+  +PriorityExists(id, priority): Task~bool~
+}
+class "DiscountRepository"
+"DiscountRepository" ..|> "IDiscountRepository"
+
+interface "IDiscountCalculationService" {
+  +Calculate(orderAmount, availableDiscounts): Task~DiscountOrder~
+}
+class "DiscountCalculationService"
+"DiscountCalculationService" ..|> "IDiscountCalculationService"
+"DiscountCalculationService" --> "IDiscountRepository" : uses
+
+class "DiscountOrder" {
+  +decimal InitialAmount
+  +decimal AmountAfterDiscount
+}
+class "DiscountAnalysis" {
+  +Discount Discount
+  +decimal DiscountAmount
+}
+"DiscountOrder" *-- "DiscountAnalysis" : "analysis"
+"DiscountAnalysis" --> "Discount" : "discount"
+
+class "DiscountCalculationRequest" {
+  +decimal OrderAmount
+  +Dictionary~string, decimal~ AvailableDiscounts
+}
+class "DicountCalculationController"
+"DicountCalculationController" --> "IDiscountCalculationService" : "calls"
+"DiscountRepository" --> "IConnectionFactory" : "uses"
+@enduml
+
+@startuml Sequence Diagram
+actor Client
+
+participant "DicountCalculationController" as Controller
+participant "DiscountCalculationService" as Service
+participant "IDiscountRepository" as Repo
+
+Client -> Controller : POST /discount-calculation\n(DiscountCalculationRequest)
+Controller -> Service : Calculate(orderAmount, availableDiscounts)
+activate Service
+
+note right of Service
+  GetAvailableDiscounts(keys)
+  For each name: call repository.Get(name)
+end note
+
+loop for each discount name
+  Service -> Repo : Get(name)
+  activate Repo
+  Repo --> Service : Discount? (found or null)
+  deactivate Repo
+end
+
+note right of Service
+  Order discounts by Priority
+  For each discount -> compute DiscountAmount
+  currentAmount -= DiscountAmount
+  record DiscountAnalysis
+end note
+
+Service --> Controller : DiscountOrder(InitialAmount, AmountAfterDiscount, Analysis)
+deactivate Service
+Controller --> Client : 200 OK (DiscountOrder)
+@enduml
+
+@startuml Component Diagram
+package "API" {
+  component DicountCalculationController
+  component DiscountsController
+  component DiscountCalculationRequest
+}
+
+package "Service Layer" {
+  component DiscountCalculationService
+  interface IDiscountCalculationService
+}
+
+package "Domain" {
+  component Discount
+  component DiscountType
+  component "DiscountOrder / DiscountAnalysis" as OrderModel
+}
+
+package "Persistence" {
+  component DiscountRepository
+  interface IDiscountRepository
+  component IConnectionFactory
+}
+
+DicountCalculationController --> IDiscountCalculationService
+DiscountsController --> IDiscountRepository
+DiscountsController --> IDiscountCalculationService
+DiscountCalculationService --> IDiscountRepository
+DiscountRepository --> IConnectionFactory
+DiscountCalculationService --> Discount
+DiscountCalculationService --> OrderModel
+DicountCalculationController --> DiscountCalculationRequest
+@enduml

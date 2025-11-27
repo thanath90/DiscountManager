@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="DiscountManger Diagrams.puml" />
+    <File Path="readme.md" />
+  </Folder>
+  <Project Path="DiscountManager.Tests/DiscountManager.Tests.csproj" />
+  <Project Path="DiscountManager/DiscountManager.csproj" />
+</Solution>
