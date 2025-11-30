@@ -28,15 +28,21 @@ Finally is recommended a healthcheck controller to verify the health of the API 
 - NSubstitute for mocking dependencies in unit tests
 - PlantUML for architecture diagrams
 
-## Enum available values (Discount Type)
+## Available DiscountTypes:
+1. Percentage
+2. FixedAmount
 
-- Percentage
-- FixedAmount
+## Initial Seed
+Table columns:
+  (Name, Type, Priority)
+Values:
+1. ('Price List Discount', Percentage, 1),
+2. ('Promotion', Percentage, 2)
 
 ## Diagrams
 Within this repository there is the file `DiscountManger Diagrams.puml` which has a class diagram, a sequence diagram and a component diagram.
-
 ## Setup Instructions
+
 1. **Clone the Repository**: Clone this repository to your local machine using Git.
 1. **Navigate to the Project Directory**: Open a terminal and navigate to the root directory of the project.
 1. **Restore Dependencies**: Run the following command to restore the project dependencies:
@@ -45,13 +51,13 @@ Within this repository there is the file `DiscountManger Diagrams.puml` which ha
    ```
 1. **Build the Project**: Build the project using the following command:
    ```
-   dotnet build
-   ```
 1. **Run The Application**: Start the application with the following command:
+   dotnet build
    ```
    dotnet run
    ```
 
+   ```
 Or
 
 1. **Clone the Repository**: Clone this repository to your local machine using Git.
