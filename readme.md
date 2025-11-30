@@ -6,7 +6,10 @@ Addittionally, the API manages the CRUD operations for the discounts table.
 
 
 ## Disclaimer
-From this API logging is not implemented alongside the authentication and authorization mechanisms. It is recommended to implement these features in a production environment to ensure security and traceability. Finally is recommended a healthcheck controller to verify the health of the API alongside the external components (DB etc).
+From this API logging is not implemented alongside the authentication and authorization mechanisms. It is recommended to implement these features in a production environment to ensure security and traceability. 
+Also recommended a global handling mechanism for the unexpected exceptions and a problem detail pattern for the response.
+The solution did pass through a code analysis tool (SonarQube).
+Finally is recommended a healthcheck controller to verify the health of the API alongside the external components (DB etc).
 
 ## Endpoints
 - `POST /apply-discount`: Apply a discount to an order.
@@ -24,3 +27,33 @@ From this API logging is not implemented alongside the authentication and author
 - xUnit for unit testing
 - NSubstitute for mocking dependencies in unit tests
 - PlantUML for architecture diagrams
+
+## Enum available values (Discount Type)
+
+- Percentage
+- FixedAmount
+
+## Diagrams
+Within this repository there is the file `DiscountManger Diagrams.puml` which has a class diagram, a sequence diagram and a component diagram.
+
+## Setup Instructions
+1. **Clone the Repository**: Clone this repository to your local machine using Git.
+1. **Navigate to the Project Directory**: Open a terminal and navigate to the root directory of the project.
+1. **Restore Dependencies**: Run the following command to restore the project dependencies:
+   ```
+   dotnet restore
+   ```
+1. **Build the Project**: Build the project using the following command:
+   ```
+   dotnet build
+   ```
+1. **Run The Application**: Start the application with the following command:
+   ```
+   dotnet run
+   ```
+
+Or
+
+1. **Clone the Repository**: Clone this repository to your local machine using Git.
+1. **Navigate to the Project Directory**: Open the slnx file with visual studio.
+1. **Run The Application**: With F5 or the debug button
